@@ -1,0 +1,41 @@
+# Node.js
+node_modules/
+dist/
+build/
+.env
+.env.* # para casos com .env.development, .env.production etc.
+npm-debug.log*
+pnpm-lock.yaml # se você prefere não versionar o lockfile do pnpm (opcional)
+
+# Logs
+logs/
+*.log
+*.out
+*.gz
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# Docker
+docker-compose.override.yml
+*.local.yml
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# TypeScript
+*.tsbuildinfo
+
+# Testes
+coverage/
+jest-*
+
+# Firebase (se for usar em desenvolvimento)
+firebase-debug.log

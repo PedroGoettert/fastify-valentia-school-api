@@ -1,0 +1,25 @@
+services:
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=students-db
+      - MYSQL_USER=mysql
+      - MYSQL_ROOT_PASSWORD=mysql
+
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+    - "8080:80"
+    
+    environment:
+    - PMA_HOST=db
+
+volumes:
+  db_data:
