@@ -1,10 +1,13 @@
 {
   "name": "valentia",
   "version": "1.0.0",
-  "description": "",
+  "description": "API de gerenciamento escolar",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch --env-file .env ./src/server.ts"
+    "dev": "tsx watch --env-file .env ./src/server.ts",
+    "build": "tsup ./src/server.ts --format cjs --dts --out-dir dist",
+    "start": "node dist/server.js",
+    "start:prod": "NODE_ENV=PRODUCTION node dist/server.js"
   },
   "keywords": [],
   "author": "",
