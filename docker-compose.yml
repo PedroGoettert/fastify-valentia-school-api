@@ -1,34 +1,45 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:16
-    restart: always
-    ports:
-      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - private_network
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - valentia-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
-      - "8080:80"
+      - "3333:3333"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-    networks:
-      - valentia-network
+      - DATABASE_URL=postgresql://valentia:valentia123@db:5432/students-db?schema=public
+      - NODE_ENV=dev
+      - PORT=3333
+    volumes:
+      - ./dist:/app/dist
+
+networks:
+  private_network:
+    driver: bridge
 
 volumes:
   db_data:
-
-networks:
-  valentia-network:
-    external: true
