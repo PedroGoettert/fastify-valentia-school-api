@@ -13,7 +13,7 @@ COPY src ./src
 # Instala pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Instala dependências
+# Instala todas as dependências (incluindo devDependencies para ter o Prisma CLI)
 RUN pnpm install --frozen-lockfile
 
 # Gera Prisma Client
@@ -31,13 +31,17 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
-COPY prisma ./prisma
+COPY --from=builder /app/prisma ./prisma
+
+# Instala pnpm na imagem final
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Redefine novamente se Prisma Client usa diretório default
-ENV NODE_ENV=PRODUCTION
+ENV NODE_ENV=production
+ENV PORT=3333
 
 # Expõe a porta da aplicação
 EXPOSE 3333
 
-# Comando de inicialização
-CMD ["node", "dist/server.js"]
+# Executa as migrações do Prisma e depois inicia a aplicação
+CMD ["sh", "-c", "pnpm install && pnpm migrate:deploy && node dist/server.js"]

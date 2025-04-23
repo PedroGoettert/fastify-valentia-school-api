@@ -13,6 +13,10 @@ server.register(cors, {
 server.register(UserRoutes);
 server.register(ClassRoutes);
 
+server.get("/helloworld", async (request, reply) => {
+	return reply.status(200).send("Olá mundo");
+});
+
 server
 	.listen({
 		port: env.PORT,
