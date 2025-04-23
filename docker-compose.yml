@@ -1,37 +1,28 @@
+version: '3.8'
+
 services:
   db:
-    image: mysql:8
+    image: postgres:16
     restart: always
-    container_name: mysql-db
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3306:3306"
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     networks:
       - valentia-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 10
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+  pgadmin:
+    image: dpage/pgadmin4
     restart: always
-    container_name: phpmyadmin
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-    depends_on:
-      db:
-        condition: service_healthy
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     networks:
       - valentia-network
 
@@ -40,4 +31,4 @@ volumes:
 
 networks:
   valentia-network:
-    driver: bridge
+    external: true
