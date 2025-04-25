@@ -3,6 +3,7 @@ import { env } from "./env";
 import { UserRoutes } from "./routes/students.routes";
 import { ClassRoutes } from "./routes/class.routes";
 import cors from "@fastify/cors";
+import { UpdateRoboot } from "./routes/updateRobot";
 
 const server = fastify();
 
@@ -16,6 +17,8 @@ server.register(ClassRoutes);
 server.get("/helloworld", async (request, reply) => {
 	return reply.status(200).send("Olá mundo");
 });
+
+server.register(UpdateRoboot);
 
 server
 	.listen({
