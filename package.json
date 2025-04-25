@@ -2,7 +2,6 @@
   "name": "valentia",
   "version": "1.0.0",
   "description": "API de gerenciamento escolar",
-  "type": "module",
   "main": "index.js",
   "files": [
     "dist",
@@ -11,7 +10,7 @@
   "scripts": {
     "dev": "tsx watch --env-file .env ./src/server.ts",
     "build": "tsup ./src/server.ts --format cjs --dts --out-dir dist",
-    "start": "node dist/server.js",
+    "start": "node dist/server.cjs",
     "prisma:generate": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
     "start:prod": "cross-env NODE_ENV=production node dist/server.cjs"
