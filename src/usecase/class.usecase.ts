@@ -13,12 +13,12 @@ export class ClassUseCase {
 		this.classRepository = new ClassRepositoryPrisma();
 	}
 
-	async create({ name }: ClassCreate) {
+	async create({ name, day, hour, maxStudent }: ClassCreate) {
 		await this.classRepository.create({
 			name,
-			hour: "",
-			day: "",
-			maxStudent: 0,
+			hour,
+			day,
+			maxStudent,
 		});
 	}
 
