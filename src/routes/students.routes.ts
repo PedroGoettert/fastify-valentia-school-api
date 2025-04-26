@@ -63,7 +63,6 @@ export async function UserRoutes(server: FastifyInstance) {
 			const { id, name, email } = studentSchema.parse(request.body);
 
 			const updatedStudent = await studentsUseCase.update({ id, name, email });
-			console.log(updatedStudent);
 			return reply.status(200).send({
 				message: "Dados atualizados com sucesso",
 				student: updatedStudent,

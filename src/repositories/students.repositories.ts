@@ -83,7 +83,6 @@ export class StudentsRepositoryPrisma implements StudentsRepository {
 					classUser: true,
 				},
 			});
-			console.log(students);
 
 			if (!students) {
 				throw new Error("Nenhum aluno encontrada");

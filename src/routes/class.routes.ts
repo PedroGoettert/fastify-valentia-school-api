@@ -50,9 +50,7 @@ export async function ClassRoutes(server: FastifyInstance) {
 
 		try {
 			const { id } = classSchema.parse(request.params);
-			console.log(id);
 			const classData = await classUseCase.findClassById({ id });
-			console.log(classData);
 
 			return reply.status(200).send(classData);
 		} catch (err) {

@@ -27,7 +27,6 @@ export class ClassUseCase {
 	}
 
 	async findClassById({ id }: FindClassById) {
-		console.log(id);
 		return await this.classRepository.findClassById({ id });
 	}
 
