@@ -1,3 +1,7 @@
+import {
+	PrismaClientKnownRequestError,
+	PrismaClientUnknownRequestError,
+} from "@prisma/client/runtime/library";
 import type {
 	AddStudentsInClass,
 	Class,
@@ -85,8 +89,20 @@ export class ClassRepositoryPrisma implements ClassRepository {
 					},
 				},
 			});
-		} catch (err) {
-			console.error("Erro ao deletar o aluno da turma:", err);
+		} catch (err: unknown) {
+			// Erro específico de banco de dados
+			if (err instanceof PrismaClientKnownRequestError) {
+				console.error("Erro de banco de dados:", err.message, err.code);
+				throw new Error(
+					"Erro ao remover aluno da turma. Verifique os dados e tente novamente.",
+				);
+			}
+			if (err instanceof PrismaClientUnknownRequestError) {
+				console.error("Erro desconhecido do banco de dados:", err.message);
+				throw new Error("Erro inesperado ao acessar o banco de dados.");
+			}
+
+			console.error("Erro desconhecido:", err);
 			throw new Error("Erro ao remover aluno da turma.");
 		}
 	}

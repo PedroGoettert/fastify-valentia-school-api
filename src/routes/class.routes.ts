@@ -28,7 +28,7 @@ export async function ClassRoutes(server: FastifyInstance) {
 		return reply.status(200).send(classData);
 	});
 
-	server.post("/add", async (request, reply) => {
+	server.post("/class/enrollments", async (request, reply) => {
 		const studentClassSchema = z.object({
 			classId: z.string(),
 			studentId: z.string(),
@@ -36,7 +36,6 @@ export async function ClassRoutes(server: FastifyInstance) {
 
 		try {
 			const { classId, studentId } = studentClassSchema.parse(request.body);
-
 			await classUseCase.addStudentInClass({ classId, studentId });
 		} catch (err) {
 			throw new Error("Erro do servidor");
@@ -73,9 +72,14 @@ export async function ClassRoutes(server: FastifyInstance) {
 			return reply
 				.status(200)
 				.send({ message: "Aluno removido da turma com sucesso." });
-		} catch (err) {
-			console.error(err);
-			return reply.status(400).send({ error: err.message });
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				console.error("Erro na rota:", err.message);
+				return reply.status(400).send({ error: err.message });
+			}
+
+			console.error("Erro inesperado na rota:", err);
+			return reply.status(500).send({ error: "Erro interno do servidor." });
 		}
 	});
 }

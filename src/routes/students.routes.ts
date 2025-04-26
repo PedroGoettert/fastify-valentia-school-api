@@ -5,7 +5,7 @@ import { z, ZodError } from "zod";
 const studentsUseCase = new StudentsUseCase();
 
 export async function UserRoutes(server: FastifyInstance) {
-	server.post("/student", async (request, reply) => {
+	server.post("/students", async (request, reply) => {
 		const studentsSchema = z.object({
 			name: z.string(),
 			email: z.string().toLowerCase().email(),
@@ -30,13 +30,13 @@ export async function UserRoutes(server: FastifyInstance) {
 		}
 	});
 
-	server.delete("/delete", async (request, reply) => {
+	server.delete("/students/:id", async (request, reply) => {
 		const studentSchema = z.object({
 			id: z.string(),
 		});
 
 		try {
-			const { id } = studentSchema.parse(request.body);
+			const { id } = studentSchema.parse(request.params);
 
 			await studentsUseCase.delete({ id });
 
@@ -52,7 +52,7 @@ export async function UserRoutes(server: FastifyInstance) {
 		}
 	});
 
-	server.put("/update", async (request, reply) => {
+	server.put("/students/:id", async (request, reply) => {
 		const studentSchema = z.object({
 			id: z.string(),
 			name: z.string().optional(),
@@ -60,7 +60,7 @@ export async function UserRoutes(server: FastifyInstance) {
 		});
 
 		try {
-			const { id, name, email } = studentSchema.parse(request.body);
+			const { id, name, email } = studentSchema.parse(request.params);
 
 			const updatedStudent = await studentsUseCase.update({ id, name, email });
 			return reply.status(200).send({
