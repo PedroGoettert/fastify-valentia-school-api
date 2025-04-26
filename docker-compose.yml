@@ -21,6 +21,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+    - valentia-network
 
   api:
     build: .
@@ -36,7 +38,12 @@ services:
       - PORT=3333
     volumes:
       - ./dist:/app/dist
+    networks:
+    - valentia-network
 
+networks:
+  valentia-network:
+    driver: bridge
 
 volumes:
   db_data:
