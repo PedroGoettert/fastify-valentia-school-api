@@ -9,6 +9,6 @@ export class UserUseCase {
 	}
 
 	async create({ email, name, password, role }: CreateUser) {
-		this.userRepository.create({ email, name, password, role });
+		await this.userRepository.create({ email, name, password, role });
 	}
 }

@@ -21,12 +21,29 @@ export async function UserRoutes(server: FastifyInstance) {
 
 			return reply.status(201).send({
 				message: "Usuário criado com sucesso",
-				token: "qualquer coisa",
+				token: "qualquer coisa", // ajuste conforme necessário
 			});
 		} catch (err) {
-			if (err instanceof Error) {
-				throw new Error(err.message);
+			// Erro de validação do Zod
+			if (err instanceof z.ZodError) {
+				return reply.status(400).send({
+					message: "Erro de validação",
+					errors: err.flatten().fieldErrors, // retorna os erros de forma organizada
+				});
 			}
+
+			// Erro de negócio: usuário já cadastrado
+			if (err instanceof Error && err.message === "Usuário já cadastrado") {
+				return reply.status(409).send({
+					message: err.message,
+				});
+			}
+
+			// Outros erros inesperados
+			console.error("Erro interno:", err);
+			return reply.status(500).send({
+				message: "Erro interno do servidor",
+			});
 		}
 	});
 }

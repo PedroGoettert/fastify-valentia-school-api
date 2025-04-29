@@ -25,6 +25,8 @@ export class UserRepositoryPrisma implements UserRepository {
 				},
 			});
 
+			console.log(user);
+
 			if (user) {
 				throw new Error("Usuário já cadastrado");
 			}
@@ -43,10 +45,24 @@ export class UserRepositoryPrisma implements UserRepository {
 			}
 
 			if (err instanceof PrismaClientKnownRequestError) {
-				throw new Error(err.message);
+				// Verifica o código de erro específico
+				if (err.code === "P2002") {
+					// P2002 é erro de violação de chave única, como no caso do email já existente
+					console.error("Email já registrado:", err);
+					throw new Error("Este email já está registrado.");
+				}
+				if (err.code === "P2003") {
+					// P2003 é erro de violação de chave estrangeira
+					console.error("Erro de chave estrangeira:", err);
+					throw new Error("Referência a dados inválidos.");
+				}
+
+				// Outros erros conhecidos podem ser tratados aqui, se necessário
+				console.error("Erro conhecido da requisição Prisma:", err);
+				throw new Error("Erro ao processar a requisição.");
 			}
 
-			throw new Error("Erro interno do servidor");
+			throw err;
 		}
 	}
 
