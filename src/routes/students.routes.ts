@@ -4,7 +4,7 @@ import { z, ZodError } from "zod";
 
 const studentsUseCase = new StudentsUseCase();
 
-export async function UserRoutes(server: FastifyInstance) {
+export async function StudentsRoutes(server: FastifyInstance) {
 	server.post("/students", async (request, reply) => {
 		const studentsSchema = z.object({
 			name: z.string(),

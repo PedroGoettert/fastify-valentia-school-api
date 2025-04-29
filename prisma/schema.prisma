@@ -14,16 +14,22 @@ datasource db {
 }
 
 model User {
-  id       String @id
+  id       String  @id @default(cuid())
   name     String
+  email    String  @unique
+  cpf      String?
   password String
-  role     Role
+  role     Role    @default(USER)
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime?
 
   @@map("user")
 }
 
 enum Role {
   ADMIN
+  TEACHER
   USER
 }
 

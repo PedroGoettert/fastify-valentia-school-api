@@ -1,7 +1,7 @@
 {
   "name": "valentia",
   "version": "1.0.0",
-  "description": "API de gerenciamento escolar",
+  "description": "API de gerenciamento escolar da Cora",
   "main": "index.js",
   "files": [
     "dist",

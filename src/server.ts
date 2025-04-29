@@ -1,9 +1,10 @@
 import fastify from "fastify";
 import { env } from "./env";
-import { UserRoutes } from "./routes/students.routes";
+import { StudentsRoutes } from "./routes/students.routes";
 import { ClassRoutes } from "./routes/class.routes";
 import cors from "@fastify/cors";
 import { UpdateRoboot } from "./routes/updateRobot";
+import { UserRoutes } from "./routes/user.routes";
 
 const server = fastify();
 
@@ -11,8 +12,9 @@ server.register(cors, {
 	methods: ["GET", "PUT", "DELETE", "PATCH"],
 	origin: "*",
 });
-server.register(UserRoutes);
+server.register(StudentsRoutes);
 server.register(ClassRoutes);
+server.register(UserRoutes);
 
 server.get("/helloworld", async (request, reply) => {
 	return reply.status(200).send("Olá mundo");
