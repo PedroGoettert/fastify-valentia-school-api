@@ -14,14 +14,16 @@ API backend para gerenciamento de dados escolares — alunos, turmas e matrícul
 - [Docker](https://www.docker.com/) – ambiente containerizado
 - [pnpm](https://pnpm.io/) – gerenciador de pacotes
 
-
 # Instale as dependências
+
 pnpm install
 
 # Configure variáveis de ambiente
+
 cp .env.example .env
 
 # Inicie o projeto
+
 pnpm dev
 
 docker-compose up --build

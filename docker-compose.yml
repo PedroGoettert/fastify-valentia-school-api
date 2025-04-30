@@ -22,7 +22,7 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-    - valentia-network
+      - valentia-network
 
   api:
     build: .
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./dist:/app/dist
     networks:
-    - valentia-network
+      - valentia-network
 
 networks:
   valentia-network:
