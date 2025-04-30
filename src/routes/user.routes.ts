@@ -68,7 +68,7 @@ export async function UserRoutes(server: FastifyInstance) {
 					httpOnly: true,
 					path: "/",
 					maxAge: 3600,
-					sameSite: "lax",
+					sameSite: "none",
 					secure: env.NODE_ENV === "production",
 				})
 				.status(200)

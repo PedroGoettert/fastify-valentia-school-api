@@ -15,14 +15,7 @@ server.register(cookie);
 server.register(cors, {
 	methods: ["GET", "PUT", "DELETE", "PATCH"],
 	credentials: true,
-	origin: (origin, cb) => {
-		const allowedOrigins = process.env.CORS_ORIGINS?.split(",") || [];
-		if (!origin || allowedOrigins.includes(origin)) {
-			cb(null, true);
-		} else {
-			cb(new Error("Not allowed"), false);
-		}
-	},
+	origin: env.CORS_ORIGINS,
 });
 
 server.register(StudentsRoutes);
