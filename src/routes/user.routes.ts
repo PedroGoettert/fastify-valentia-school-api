@@ -63,16 +63,7 @@ export async function UserRoutes(server: FastifyInstance) {
 			const data = schema.parse(request.body);
 			const result = await userUseCase.login(data);
 
-			return reply
-				.setCookie("token", result.token, {
-					httpOnly: true,
-					path: "/",
-					maxAge: 3600,
-					sameSite: "none",
-					secure: env.NODE_ENV === "production",
-				})
-				.status(200)
-				.send(result);
+			return reply.status(200).send(result);
 		} catch (err) {
 			console.error("Erro no login:", err);
 			return reply.status(401).send({
