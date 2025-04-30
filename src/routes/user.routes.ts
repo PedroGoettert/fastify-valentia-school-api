@@ -10,14 +10,16 @@ export async function UserRoutes(server: FastifyInstance) {
 		const userSchema = z.object({
 			name: z.string().nonempty("Campo obrigatório"),
 			password: z.string().nonempty("Campo obrigatório"),
-			role: z.nativeEnum(Role),
+			role: z.nativeEnum(Role).optional(),
 			email: z.string().email().nonempty("Campo obrigatório"),
 		});
 
 		try {
 			const { email, name, password, role } = userSchema.parse(request.body);
 
-			await userUseCase.create({ email, name, password, role });
+			const finalRole = role ?? Role.USER;
+
+			await userUseCase.create({ email, name, password, role: finalRole });
 
 			return reply.status(201).send({
 				message: "Usuário criado com sucesso",
